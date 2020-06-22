@@ -6,8 +6,19 @@ services:
   - docker
 
 before_install:
-  - docker build -f client/Dockefile.dev -t memam/fibonacci-client ./client
+  - docker build -f client/Dockefile.dev -t fibonacci-client ./client
 
 script:
-  - docker run -e CI=true memam/fibonacci-client npm run test
+  - docker run -e CI=true fibonacci-client npm run test
 
+after_success:
+  - docker build -t mahmoudemam/fibonacci-client ./client
+  - docker build -t mahmoudemam/fibonacci-nginx ./nginx
+  - docker build -t mahmoudemam/fibonacci-worker ./worker
+  - docker build -t mahmoudemam/fibonacci-api ./api-server
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push mahmoudemam/fibonacci-nginx
+  - docker push mahmoudemam/fibonacci-client
+  - docker push mahmoudemam/fibonacci-api
+  - docker push mahmoudemam/fibonacci-worker
