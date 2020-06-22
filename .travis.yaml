@@ -7,5 +7,5 @@ before_install:
   - docker build -f client/Dockefile.dev -t memam/fibonacci-client ./client
 
 script:
-  - docker run -e CI=true docker-react npm run test
-  
+  - docker run -e CI=true memam/fibonacci-client npm run test
+
