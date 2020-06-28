@@ -6,7 +6,7 @@ services:
   - docker
 
 before_install:
-  - docker build -f client/Dockefile.dev -t fibonacci-client ./client
+  - docker build -f client/Dockerfile.dev -t fibonacci-client ./client
 
 script:
   - docker run -e CI=true fibonacci-client npm run test
